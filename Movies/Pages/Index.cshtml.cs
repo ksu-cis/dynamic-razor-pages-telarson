@@ -32,10 +32,12 @@ namespace Movies.Pages
         public void OnGet()
         {
             SearchTerms = Request.Query["SearchTerms"];
-            Movies = MovieDatabase.Search(SearchTerms);
             MPAARatings = Request.Query["MPAARatings"];
-
+            Movies = MovieDatabase.Search(SearchTerms);
+            Movies = MovieDatabase.FilterByMPAARating(Movies, MPAARatings);
         }
+
+
 
     }
 }

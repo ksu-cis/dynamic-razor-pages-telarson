@@ -25,6 +25,8 @@ namespace Movies.Pages
         /// </summary>
         public string[] MPAARatings { get; set; }
 
+        public string[] Genres { get; set; }
+
 
         /// <summary>
         /// Gets the search results for display on the page
@@ -33,8 +35,10 @@ namespace Movies.Pages
         {
             SearchTerms = Request.Query["SearchTerms"];
             MPAARatings = Request.Query["MPAARatings"];
+            Genres = Request.Query["Genres"];
             Movies = MovieDatabase.Search(SearchTerms);
             Movies = MovieDatabase.FilterByMPAARating(Movies, MPAARatings);
+            Movies = MovieDatabase.FilterByGenre(Movies, Genres);
         }
 
 

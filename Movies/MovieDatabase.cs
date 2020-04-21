@@ -24,6 +24,17 @@ namespace Movies
                 string json = file.ReadToEnd();
                 movies = JsonConvert.DeserializeObject<List<Movie>>(json);
             }
+
+            HashSet<string> genreSet = new HashSet<string>();
+            foreach (Movie movie in movies)
+            {
+                if (movie.MajorGenre != null)
+                {
+                    genreSet.Add(movie.MajorGenre);
+                }
+            }
+            genres = genreSet.ToArray();
+
         }
 
         /// <summary>
@@ -92,7 +103,37 @@ namespace Movies
             }
 
             return results;
+        }
 
+        // The genres represented in the database
+        private static string[] genres;
+        /// <summary>
+        /// Gets the movie genres represented in the database 
+        /// </summary>
+        public static string[] Genres => genres;
+
+        /// <summary>
+        /// Filters the provided collection of movies
+        /// </summary>
+        /// <param name="movies">The collection of movies to filter</param>
+        /// <param name="ratings">The ratings to include</param>
+        /// <returns>A collection containing only movies that match the filter</returns>
+        public static IEnumerable<Movie> FilterByGenre(IEnumerable<Movie> movies, IEnumerable<string> genres)
+        {
+            // If no filter is specified, just return the provided collection
+            if (genres == null || genres.Count() == 0) return movies;
+
+            // Filter the supplied collection of movies
+            List<Movie> results = new List<Movie>();
+            foreach (Movie movie in movies)
+            {
+                if (movie.MajorGenre != null && genres.Contains(movie.MajorGenre))
+                {
+                    results.Add(movie);
+                }
+            }
+
+            return results;
         }
 
 
